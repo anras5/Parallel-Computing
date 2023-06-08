@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-Row *findMatchingRows(Row *rows, int numRows, int &numAnomalies, int& numCorrect)
+Row *findMatchingRows(Row *rows, int numRows, int &numAnomalies, int &numCorrect)
 {
     Row *anomalies = new Row[numRows];
     numAnomalies = 0;
@@ -11,9 +11,18 @@ Row *findMatchingRows(Row *rows, int numRows, int &numAnomalies, int& numCorrect
         bool isConsistent = true;
         for (int j = 0; j < numRows; j++)
         {
-            if (rows[i].A == rows[j].A && rows[i].B == rows[j].B && rows[i].C == rows[j].C && rows[i].D == rows[j].D)
+            if (i != j)
             {
-                if (rows[i].X != rows[j].X)
+                bool isMatch = true;
+                for (int k = 0; k < rows[i].numValues - 1; k++)
+                {
+                    if (rows[i].values[k] != rows[j].values[k])
+                    {
+                        isMatch = false;
+                        break;
+                    }
+                }
+                if (isMatch && rows[i].values[rows[i].numValues - 1] != rows[j].values[rows[j].numValues - 1])
                 {
                     isConsistent = false;
                     break;
@@ -23,7 +32,9 @@ Row *findMatchingRows(Row *rows, int numRows, int &numAnomalies, int& numCorrect
         if (!isConsistent)
         {
             anomalies[numAnomalies++] = rows[i];
-        } else {
+        }
+        else
+        {
             numCorrect++;
         }
     }
@@ -48,15 +59,16 @@ int main(int argc, char *argv[])
     if (rows != nullptr)
     {
         Row *foundRows = findMatchingRows(rows, numRows, numAnomalies, numCorrect);
-        std::cout << "Liczba wierszy w pliku: " << numRows << std::endl;
-        std::cout << "Zgodnych wynikow: " << numCorrect << std::endl;
+        std::cout << "Number of rows in the file: " << numRows << std::endl;
+        std::cout << "Correct rows: " << numCorrect << std::endl;
         if (numAnomalies == 0)
         {
-            std::cout << "X wynika bezpośrednio z ABCD" << std::endl;
+            std::cout << "Last column is dependent on the rest" << std::endl;
+            
         }
         else
         {
-            std::cout << "Wystepuja anomalie: " << numAnomalies << std::endl;
+            std::cout << "Found anomalies: " << numAnomalies << std::endl;
             printRows(foundRows, numAnomalies);
         }
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(SequentialAll)
+project(InductiveLogicProgramming)
 
 # Add executable
-add_executable(sequential_all sequential_all.cpp utils.cpp)
+add_executable(sequential sequential.cpp utils.cpp)

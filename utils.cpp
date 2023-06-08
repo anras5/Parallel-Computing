@@ -53,21 +53,21 @@ Row *parseCSV(const std::string &filename, int &numRows)
         int numTokens;
         std::string *tokens = splitString(line, ',', numTokens);
 
-        if (numTokens == 5)
+        int *values = new int[numTokens];
+        for (int j = 0; j < numTokens; j++)
         {
-            int a = std::stoi(tokens[0]);
-            int b = std::stoi(tokens[1]);
-            int c = std::stoi(tokens[2]);
-            int d = std::stoi(tokens[3]);
-            int x = std::stoi(tokens[4]);
-
-            rows[i++] = Row(a, b, c, d, x);
+            values[j] = std::stoi(tokens[j]);
         }
 
+        Row *newRow = new Row(values, numTokens);
+        rows[i++] = *newRow;
+
+        delete[] values;
         delete[] tokens;
     }
 
     file.close();
+
     return rows;
 }
 
@@ -76,6 +76,14 @@ void printRows(Row *rows, int numRows)
     for (int i = 0; i < numRows; i++)
     {
         Row &row = rows[i];
-        std::cout << row.A << "," << row.B << "," << row.C << "," << row.D << "," << row.X << std::endl;
+        for (int j = 0; j < row.numValues; j++)
+        {
+            std::cout << row.values[j];
+            if (j < row.numValues - 1)
+            {
+                std::cout << ",";
+            }
+        }
+        std::cout << std::endl;
     }
 }
