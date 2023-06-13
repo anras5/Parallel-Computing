@@ -11,9 +11,9 @@ def generate_csv(filename, num_rows, num_columns):
             
             # Determine whether X is the sum of numbers or anomaly
             if random.random() < 0.005:
-                x = sum(numbers)
-            else:
                 x = 0
+            else:
+                x = sum(numbers)
 
             numbers.append(x)
             writer.writerow(numbers)
