@@ -1,31 +1,36 @@
 import csv
 import random
-import pandas as pd
+from pathlib import Path
 
-def generate_csv(filename, num_rows):
+def generate_csv(filename, num_rows, num_columns):
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
 
         for _ in range(num_rows):
-            a = random.randint(1, 8)
-            b = random.randint(1, 8)
-            c = random.randint(1, 8)
-            d = random.randint(1, 8)
+            numbers = [random.randint(1, 8) for _ in range(num_columns)]
             
-            # Determine whether X is the sum or product of ABCD
+            # Determine whether X is the sum of numbers or anomaly
             if random.random() < 0.005:
-                x = a + b + c + d
+                x = sum(numbers)
             else:
-                x = a * b * c * d
+                x = 0
 
-            writer.writerow([a, b, c, d, x])
+            numbers.append(x)
+            writer.writerow(numbers)
 
     print(f"CSV file '{filename}' generated successfully.")
 
 
-filename = 'data.csv'
-num_rows = 10000
+def main():
+    directory = Path("data")
+    if not directory.exists():
+        directory.mkdir(parents=True)
 
-for i in range(10000, 500_000, 10_000):
-    generate_csv(f"data/data_{i}.csv", i)
-# generate_csv(filename, num_rows)
+    columns = 10
+    for rows in range(10_000, 200_001, 1000):
+        generate_csv(f"data/data_{rows}.csv", rows, columns)
+
+if __name__ == '__main__':
+    main()
+
+
