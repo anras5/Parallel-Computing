@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-Row *findMatchingRows(Row *rows, int numRows, int &numAnomalies, int &numCorrect)
+Row *findAnomalies(Row *rows, int numRows, int &numAnomalies, int &numCorrect)
 {
     Row *anomalies = new Row[numRows];
     numAnomalies = 0;
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
     if (rows != nullptr)
     {
-        Row *foundRows = findMatchingRows(rows, numRows, numAnomalies, numCorrect);
+        Row *foundRows = findAnomalies(rows, numRows, numAnomalies, numCorrect);
         std::cout << "Number of rows in the file: " << numRows << std::endl;
         std::cout << "Correct rows: " << numCorrect << std::endl;
         if (numAnomalies == 0)
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         else
         {
             std::cout << "Found anomalies: " << numAnomalies << std::endl;
-            printRows(foundRows, numAnomalies);
+            // printRows(foundRows, numAnomalies);
         }
 
         delete[] rows;

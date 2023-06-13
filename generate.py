@@ -5,7 +5,6 @@ import pandas as pd
 def generate_csv(filename, num_rows):
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['A', 'B', 'C', 'D', 'X'])
 
         for _ in range(num_rows):
             a = random.randint(1, 8)
@@ -26,4 +25,7 @@ def generate_csv(filename, num_rows):
 
 filename = 'data.csv'
 num_rows = 10000
+
+for i in range(10000, 500_000, 10_000):
+    generate_csv(f"data/data_{i}.csv", i)
 # generate_csv(filename, num_rows)
