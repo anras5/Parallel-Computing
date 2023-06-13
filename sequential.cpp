@@ -1,8 +1,9 @@
+#include <chrono>
+#include <iomanip>
 #include "utils.hpp"
 
-Row *findAnomalies(Row *rows, int numRows, int &numAnomalies, int &numCorrect)
+void findAnomalies(Row *rows, int numRows, int &numAnomalies, int &numCorrect)
 {
-    Row *anomalies = new Row[numRows];
     numAnomalies = 0;
     numCorrect = 0;
 
@@ -31,22 +32,20 @@ Row *findAnomalies(Row *rows, int numRows, int &numAnomalies, int &numCorrect)
         }
         if (!isConsistent)
         {
-            anomalies[numAnomalies++] = rows[i];
+            numAnomalies++;
         }
         else
         {
             numCorrect++;
         }
     }
-
-    return anomalies;
 }
 
 int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        std::cout << "Usage: ./sequential_all <csv_filename>" << std::endl;
+        std::cout << "Usage: ./sequential <csv_filename>" << std::endl;
         return 1;
     }
 
@@ -58,19 +57,24 @@ int main(int argc, char *argv[])
 
     if (rows != nullptr)
     {
-        Row *foundRows = findAnomalies(rows, numRows, numAnomalies, numCorrect);
-        std::cout << "Number of rows in the file: " << numRows << std::endl;
-        std::cout << "Correct rows: " << numCorrect << std::endl;
-        if (numAnomalies == 0)
-        {
-            std::cout << "Last column is dependent on the rest" << std::endl;
-            
-        }
-        else
-        {
-            std::cout << "Found anomalies: " << numAnomalies << std::endl;
-            // printRows(foundRows, numAnomalies);
-        }
+        auto start = std::chrono::high_resolution_clock::now();
+        findAnomalies(rows, numRows, numAnomalies, numCorrect);
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+        double executionTime = duration.count() * 1000;
+
+        std::cout << numRows << ";" << std::fixed << std::setprecision(2) << executionTime << std::endl;
+
+        // std::cout << "Number of rows in the file: " << numRows << std::endl;
+        // std::cout << "Correct rows: " << numCorrect << std::endl;
+        // if (numAnomalies == 0)
+        // {
+        //     std::cout << "Last column is dependent on the rest" << std::endl;
+        // }
+        // else
+        // {
+        //     std::cout << "Found anomalies: " << numAnomalies << std::endl;
+        // }
 
         delete[] rows;
     }
