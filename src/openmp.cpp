@@ -57,7 +57,7 @@ void findAnomalies(Row *rows, int numRows, int &numAnomalies, int &numCorrect)
         numCorrectArray[threadNum] = numCorrect;
     }
 
-    // Combine results from all threads
+    // combine results from all threads
     numAnomalies = 0;
     numCorrect = 0;
     for (int i = 0; i < numThreads; i++)
@@ -66,7 +66,7 @@ void findAnomalies(Row *rows, int numRows, int &numAnomalies, int &numCorrect)
         numCorrect += numCorrectArray[i];
     }
 
-    // Cleanup
+    // cleanup
     delete[] numAnomaliesArray;
     delete[] numCorrectArray;
 }
