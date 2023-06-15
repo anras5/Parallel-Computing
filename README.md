@@ -36,3 +36,7 @@ python3 generate.py
 .\run.ps1
 ```
 
+### Run Jupyter Notebook
+```commandline
+python -m pip install requirements.txt
+```
